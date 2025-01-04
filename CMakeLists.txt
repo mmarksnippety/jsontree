@@ -16,8 +16,16 @@ target_sources(tests PRIVATE
 
 
 add_executable(examples__settings_loader
-        examples/settings_loader.cpp
+        examples/settings_loader/main.cpp
 )
 target_include_directories(examples__settings_loader PRIVATE
-        includes/jsontree
+        includes
+)
+
+
+add_executable(examples__simple_array
+        examples/simple_array/main.cpp
+)
+target_include_directories(examples__simple_array PRIVATE
+        includes
 )

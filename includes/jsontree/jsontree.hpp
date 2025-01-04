@@ -137,8 +137,8 @@ class JsonTree {
     std::stack<JsonNode*, std::list<JsonNode*>> parents{};
     std::list<JsonNode*> nodes{};
     JsonTreeParseError error_code{JsonTreeParseError::no_error};
-    bool is_valid{false};
-    bool is_parsed{false};
+    bool is_valid_{false};
+    bool is_parsed_{false};
     // parse context
     size_t index{0};
     char current_char{};
@@ -178,21 +178,21 @@ public:
 
     [[nodiscard]] auto get_json_data() const { return json_data; }
     [[nodiscard]] auto get_error_code() const { return error_code; }
-    [[nodiscard]] auto get_is_valid() const { return is_valid; }
-    [[nodiscard]] auto get_is_parsed() const { return is_parsed; }
+    [[nodiscard]] auto valid() const { return is_valid_; }
+    [[nodiscard]] auto parsed() const { return is_parsed_; }
     [[nodiscard]] auto get_index() const { return index; }
     [[nodiscard]] auto get_root() const { return nodes.front(); }
     [[nodiscard]] auto empty() const { return nodes.empty(); }
     [[nodiscard]] auto& get_nodes() const { return nodes; }
 
     bool parse() {
-        if (is_parsed) { return is_valid; }
-        is_parsed = true;
+        if (is_parsed_) { return is_valid_; }
+        is_parsed_ = true;
         parse_skip_initial_whitespaces();
         if (index == json_data.size()) {
             error_code = JsonTreeParseError::empty_json_data;
-            is_valid = false;
-            return is_valid;
+            is_valid_ = false;
+            return is_valid_;
         }
         // std::cout << std::endl << "Data: " << json_data.substr(index) << std::endl;
         while (index < json_data.size() && error_code == JsonTreeParseError::no_error) {
@@ -214,8 +214,8 @@ public:
             error_code = JsonTreeParseError::unexpected_end_of_data;
         }
         //
-        is_valid = error_code == JsonTreeParseError::no_error;
-        return is_valid;
+        is_valid_ = error_code == JsonTreeParseError::no_error;
+        return is_valid_;
     }
 };
 

@@ -1,3 +1,26 @@
+/*
+* jsontree - JSON Parsing and library in C++20
+ * Copyright 2025 Marcin Markiewicz, marcin.kivrin@gmail.com
+ *
+ * This file is a part of jsontree project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ * Project: jsontree
+ *
+ */
+
 #include "jsontree.hpp"
 
 
@@ -5,7 +28,7 @@ void test_parse_embedded_object() {
     std::cout << "Test with simple value...";
     JsonTree tree(R"({"k1": "example", "k2": {"k2.2": "example2"}})");
     assert(tree.parse());
-    assert(tree.get_is_valid());
+    assert(tree.valid());
     assert(tree.get_nodes().size() == 7);
     // check tree structure
     const auto root = tree.get_root();
@@ -41,7 +64,7 @@ void test_parse_array_of_objects() {
     ])"
     );
     assert(tree.parse());
-    assert(tree.get_is_valid());
+    assert(tree.valid());
     assert(tree.get_nodes().size() == 7);
     // check tree structure
     const auto root = tree.get_root();
@@ -78,7 +101,7 @@ void test_parse_array_of_mixed_items() {
     ])"
     );
     assert(tree.parse());
-    assert(tree.get_is_valid());
+    assert(tree.valid());
     assert(tree.get_nodes().size() == 5);
     assert(tree.get_root()->is_array());
     assert(tree.get_root()->get_children().size() == 2);

@@ -1,7 +1,30 @@
+/*
+ * jsontree - JSON Parsing and library in C++20
+ * Copyright 2025 Marcin Markiewicz, marcin.kivrin@gmail.com
+ *
+ * This file is a part of jsontree project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ * Project: jsontree
+ *
+ */
+
 #include <iostream>
 #include <string>
-#include "jsontree.hpp"
-#include "jsontree_tools.hpp"
+#include "jsontree/jsontree.hpp"
+#include "jsontree/jsontree_tools.hpp"
 
 
 std::string json_player_settings_data{R"(
@@ -49,13 +72,13 @@ bool populate_int_from_json_tree(const JsonNode* key_node, int& dst_value) {
 
 bool player_settings_from_json_tree(const JsonTree& tree, PlayerSettings& settings) {
     // check is we have json root object
-    if (!tree.get_is_parsed()) { return false; }
+    if (!tree.valid()) { return false; }
     if (!tree.get_root()->is_object()) { return false; }
     // iterate over root keys
     bool success = true;
     for (auto const node : tree.get_root()->get_children()) {
         if (node->is_key()) {
-            auto const key {node->get_key_name()};
+            auto const key{node->get_key_name()};
             if (key == "name") {
                 success &= populate_string_from_json_tree(node, settings.name);
                 continue;
@@ -80,7 +103,7 @@ int main() {
 
     JsonTree json_player_settings(json_player_settings_data);
     json_player_settings.parse();
-    if (!json_player_settings.get_is_parsed()) {
+    if (!json_player_settings.valid()) {
         std::cout << "Failed to parse json data!" << std::endl;
         std::cout << "Error: " << get_json_parse_error_message(json_player_settings.get_error_code()) << std::endl;
         return 1;

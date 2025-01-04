@@ -1,3 +1,26 @@
+/*
+* jsontree - JSON Parsing and library in C++20
+ * Copyright 2025 Marcin Markiewicz, marcin.kivrin@gmail.com
+ *
+ * This file is a part of jsontree project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ * Project: jsontree
+ *
+ */
+
 #include <iostream>
 #include <cassert>
 #include "jsontree.hpp"
@@ -8,8 +31,8 @@ void test_parse_error_empty_object() {
     std::cout << "Test with empty object...";
     JsonTree tree("{}");
     assert(tree.parse());
-    assert(tree.get_is_valid());
-    assert(tree.get_is_parsed());
+    assert(tree.valid());
+    assert(tree.parsed());
     assert(tree.get_index() == 2);
     assert(tree.get_root()->is_object());
     assert(tree.get_root()->get_children().empty());
@@ -20,7 +43,7 @@ void test_parse_object_with_simple_value() {
     std::cout << "Test with simple value...";
     JsonTree tree(R"({"k1": "example"})");
     assert(tree.parse());
-    assert(tree.get_is_valid());
+    assert(tree.valid());
     assert(tree.get_nodes().size() == 3);
     // check nodes
     auto it = tree.get_nodes().begin();
@@ -68,8 +91,8 @@ void test_parse_object_with_many_simple_values() {
     })";
     JsonTree tree(json_data);
     assert(tree.parse());
-    assert(tree.get_is_valid());
-    assert(tree.get_is_parsed());
+    assert(tree.valid());
+    assert(tree.parsed());
     assert(tree.get_index() == json_data.size());
     assert(tree.get_root()->is_object());
     // test node types
@@ -99,8 +122,8 @@ void test_parse_empty_array() {
     std::cout << "Test with empty array...";
     JsonTree tree("[]");
     assert(tree.parse());
-    assert(tree.get_is_valid());
-    assert(tree.get_is_parsed());
+    assert(tree.valid());
+    assert(tree.parsed());
     assert(tree.get_index() == 2);
     assert(tree.get_root()->is_array());
     assert(tree.get_root()->get_children().empty());
@@ -118,8 +141,8 @@ void test_parse_array_with_simple_values() {
     JsonTree tree(json_data);
     // base checking
     assert(tree.parse());
-    assert(tree.get_is_valid());
-    assert(tree.get_is_parsed());
+    assert(tree.valid());
+    assert(tree.parsed());
     assert(tree.get_index() == json_data.size());
     assert(tree.get_root()->is_array());
     assert(tree.get_root()->get_children().size() == 4);
